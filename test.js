@@ -1,6 +1,6 @@
 process.env.NODE_ENV = "test";
 
-import { hasTemp } from "./app.js";
+const { hasTemp } = await import("./app.js");
 
 if (!hasTemp({ main: { temp: 20 } })) {
   console.error("failed: expected true for valid temp");
@@ -12,4 +12,4 @@ if (hasTemp({ main: {} })) {
   process.exit(1);
 }
 
-console.log("test passed");
+console.log("✅ test passed");
