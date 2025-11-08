@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "test";
+
 import { hasTemp } from "./app.js";
 
 if (!hasTemp({ main: { temp: 20 } })) {
