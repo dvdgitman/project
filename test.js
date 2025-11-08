@@ -12,4 +12,4 @@ if (hasTemp({ main: {} })) {
   process.exit(1);
 }
 
-console.log("✅ test passed");
+console.log("test passed");
