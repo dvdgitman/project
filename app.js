@@ -16,8 +16,8 @@ async function send() {
   console.log(data);
 
   const msg = {
-    temp: data.main.temp,
-    time: Date.now() // simple timestamp
+    temperature_c: data.main.temp,
+    timestamp_ms: new Date().toISOString() // logstash date filter
   };
 
 
