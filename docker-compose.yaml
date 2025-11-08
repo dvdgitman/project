@@ -1,28 +1,28 @@
 version: '3.8'
 
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-    container_name: elasticsearch
-    ports:
-      - "9200:9200"
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
       - "5672:5672" # AMQP port for the app
       - "15672:15672" # Management UI (http://localhost:15672, guest/guest)
+    networks:
+          - elasticsearch_default
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   logstash:
     image: docker.elastic.co/logstash/logstash:8.11.0
     container_name: logstash
     # Logstash needs time to wait for both RabbitMQ and Elasticsearch to be ready
+    networks:
+          - elasticsearch_default
     depends_on:
       - rabbitmq
-      - elasticsearch
     volumes:
       - ./logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
 
@@ -32,9 +32,13 @@ services:
     container_name: weather_app
     restart: always
     environment:
-      - API_KEY="b9cfd6d35d8f6e91c4c5e8748a2b0898" 
+      - API_KEY=b9cfd6d35d8f6e91c4c5e8748a2b0898
+    networks:
+          - elasticsearch_default
     depends_on:
-      - rabbitmq # Ensure RabbitMQ is running before the app starts
+      rabbitmq:
+        condition: service_healthy
 
-volumes:
-  esdata: # Volume for persistent Elasticsearch data
+networks:
+  elasticsearch_default:
+    external: true
