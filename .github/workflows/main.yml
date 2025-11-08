@@ -31,16 +31,22 @@ jobs:
           docker push $REGISTRY/$IMAGE_NAME:${{ github.sha }}
           docker push $REGISTRY/$IMAGE_NAME:latest
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Run unit test
         run: node test.js
 
       - name: Pull latest image
+        if: ${{ success() }}
         run: docker compose pull
 
-      - name: Run stack (temporary)
+      - name: Docker Run
+        if: ${{ success() }}
         run: |
           docker compose up --build -d
 
       - name: Show container logs
+        if: ${{ success() }}
         run: |
           docker compose logs app --tail=50
