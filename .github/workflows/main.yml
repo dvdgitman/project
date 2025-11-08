@@ -16,20 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: app/package.json
-      
-      - name: Install dependencies
-        run: |
-          echo "Installing dependencies"
-          cd app
-          npm ci
-          echo "Dependencies installed successfully"
-      
       - name: Build Docker image
         run: |
           echo "Building Docker image..."
