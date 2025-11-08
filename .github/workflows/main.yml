@@ -35,6 +35,8 @@ jobs:
         run: npm install
 
       - name: Run unit test
+        env:
+          API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: node test.js
 
       - name: Pull latest image
