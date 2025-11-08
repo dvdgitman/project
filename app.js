@@ -2,17 +2,12 @@ import fetch from "node-fetch"; // call websites and APIs
 
 import amqp from "amqplib"; // RabbitMQ library
 
-const API_KEY = "c46aa65bd662d6a81d406ccad53deb8c"; // env from docker compose
-
-// const CITY = "Tokyo";
-const LAT = 35.6895;
-const LON = 139.6917;
-
+const API_KEY = "b9cfd6d35d8f6e91c4c5e8748a2b0898"; // env from docker compose
 
 async function send() {
 
   // weather API request
-  const res = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${LAT}&lon=${LON}&exclude=minutely,daily&units=metric&appid=${API_KEY}`);
+  const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Tokyo,japan&APPID=${API_KEY}&units=metric`);
 
   // response as json
   const data = await res.json();
@@ -21,9 +16,7 @@ async function send() {
   console.log(data);
 
   const msg = {
-    lat: Number(LAT),
-    lon: Number(LON),
-    temp: data.current.temp,
+    temp: data.main.temp,
     time: Date.now() // simple timestamp
   };
 
