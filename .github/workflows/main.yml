@@ -19,8 +19,7 @@ jobs:
       - name: Build Docker image
         run: |
           echo "Building Docker image..."
-          docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} ./app
-          docker build -t ${{ env.IMAGE_NAME }}:latest ./app
+          docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
           echo "Docker image built successfully"
 
   test:
