@@ -39,10 +39,6 @@ jobs:
           API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: node test.js
 
-      - name: Pull latest image
-        if: ${{ success() }}
-        run: docker compose pull
-
       - name: Docker Run
         if: ${{ success() }}
         run: |
