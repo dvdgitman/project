@@ -2,7 +2,7 @@ import fetch from "node-fetch"; // call websites and APIs
 
 import amqp from "amqplib"; // RabbitMQ library
 
-const API_KEY = "b9cfd6d35d8f6e91c4c5e8748a2b0898"; // env from docker compose
+const API_KEY = process.env.API_KEY; // env from docker compose
 
 async function send() {
 
@@ -24,16 +24,16 @@ async function send() {
   // print to console for testing
   console.log("Would send:", msg);
 
-  // // rabbitmq connection
-  // const conn = await amqp.connect("amqp://guest:guest@rabbitmq");
-  // const ch = await conn.createChannel();
-  // await ch.assertQueue("weather");
-  // ch.sendToQueue("weather", Buffer.from(JSON.stringify(msg)));
+  // rabbitmq connection
+  const conn = await amqp.connect("amqp://guest:guest@rabbitmq");
+  const ch = await conn.createChannel();
+  await ch.assertQueue("weather");
+  ch.sendToQueue("weather", Buffer.from(JSON.stringify(msg)));
 
-  // console.log("Sent:", msg);
+  console.log("Sent:", msg);
 
-  // await ch.close();
-  // await conn.close();
+  await ch.close();
+  await conn.close();
 }
 
 send(); // run now
