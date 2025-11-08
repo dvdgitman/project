@@ -41,6 +41,8 @@ export function hasTemp(data) {
   return data && data.main && typeof data.main.temp === "number";
 }
 
-send(); // run now
-// run every hour
-setInterval(send, 3600000);
+
+if (process.env.NODE_ENV !== "test") {
+  send();
+  setInterval(send, 3600000);
+}
